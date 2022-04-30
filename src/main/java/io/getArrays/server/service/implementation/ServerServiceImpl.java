@@ -8,17 +8,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
 @Slf4j
-public class ServerImpl implements ServerService {
+public class ServerServiceImpl implements ServerService {
     private final ServerRepo serverRepo;
 
     @Override
@@ -64,6 +66,10 @@ public class ServerImpl implements ServerService {
     }
 
     private String setServerImageUrl() {
-        return null;
+        String[] imageNames = {"server1.jpg", "server2.jpg", "server3.jpg", "server4.jpg"};
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/server/image/" + imageNames[new Random().nextInt(4)])
+                .toUriString();
     }
 }
